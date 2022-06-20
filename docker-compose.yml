@@ -1,0 +1,38 @@
+services:
+  mysql-db:
+    image: mysql:8
+    container_name: mysql-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=root
+    ports:
+      - 3306:3306
+    restart: always
+
+  resource-service:
+    build: ResourceService
+    ports:
+      - 8080:8080
+    volumes:
+      - upload:/upload
+    depends_on:
+      - mysql-db
+
+  song-service:
+    build: SongService
+    ports:
+      - 8081:8081
+    depends_on:
+      - mysql-db
+      - resource-service
+
+  resource-processor:
+    build: ResourceProcessor
+    ports:
+      - 8082:8082
+    depends_on:
+      - mysql-db
+
+volumes:
+  upload:
+    external: true
