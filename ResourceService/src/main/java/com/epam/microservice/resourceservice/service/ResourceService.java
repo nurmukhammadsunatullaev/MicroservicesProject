@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class ResourceService {
     private final ResourceMapper mapper;
 
     @Transactional
-    public Long saveFile(MultipartFile file){
+    public Optional<ResourceModel> saveFile(MultipartFile file){
         try {
             byte[] bytes = file.getBytes();
             Path path = Paths.get("/upload/"+Objects.requireNonNull(file.getOriginalFilename()));
@@ -33,13 +34,17 @@ public class ResourceService {
             ResourceEntity entity = new ResourceEntity();
             entity.setPath(path.toString());
             resourceRepository.save(entity);
-            return entity.getId();
+            return Optional.of(mapper.toDto(entity));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return Optional.empty();
         }
     }
 
     public Optional<ResourceModel> getResourceById(Long id) {
         return resourceRepository.findById(id).map(mapper::toDto);
+    }
+
+    public List<ResourceModel> getAllResources() {
+        return mapper.toDtos(resourceRepository.findAll());
     }
 }

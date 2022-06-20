@@ -12,24 +12,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
 @RequestMapping("/resources")
 @RequiredArgsConstructor
 public class ResourceController {
-
     private final ResourceService resourceService;
 
     @GetMapping
-    public ResponseEntity get(){
-        return ResponseEntity.ok().build();
-    }
-
-
-    @GetMapping("/data/{id}")
-    public ResponseEntity<ResourceModel> getResourceDataById(@PathVariable Long id){
-        return resourceService.getResourceById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<List<ResourceModel>> get(){
+        return ResponseEntity.ok(resourceService.getAllResources());
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,13 +46,20 @@ public class ResourceController {
                     }).orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity post(@RequestParam("file") MultipartFile file){
-        resourceService.saveFile(file);
-        return ResponseEntity.ok().build();
+    @GetMapping("/data/{id}")
+    public ResponseEntity<ResourceModel> getResourceDataById(@PathVariable Long id){
+        return resourceService.getResourceById(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+
+    @PostMapping
+    public ResponseEntity<ResourceModel> post(@RequestParam("file") MultipartFile file){
+        return resourceService.saveFile(file).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping()
     public ResponseEntity delete(){
         return ResponseEntity.ok().build();
     }
+
+
 }

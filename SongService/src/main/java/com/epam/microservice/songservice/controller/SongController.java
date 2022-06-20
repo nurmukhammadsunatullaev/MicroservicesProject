@@ -16,13 +16,6 @@ public class SongController {
 
     private final SongService songService;
 
-    @PostMapping
-    public ResponseEntity<SongModel> postSong(@RequestBody SongModel model){
-       return songService.save(model)
-               .map(ResponseEntity::ok)
-               .orElse(ResponseEntity.notFound().build());
-    }
-
     @GetMapping
     public ResponseEntity<List<SongModel>> getSongs(){
         return ResponseEntity.ok(songService.getAll());
@@ -31,6 +24,13 @@ public class SongController {
     @GetMapping("/{id}")
     public ResponseEntity<SongModel> getSong(@PathVariable Long id){
         return songService.getById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<SongModel> postSong(@RequestBody SongModel model){
+        return songService.save(model)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
