@@ -56,10 +56,8 @@ public class ResourceController {
         return resourceService.saveFile(file).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping()
-    public ResponseEntity delete(){
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/{ids}")
+    public ResponseEntity<List<ResourceModel>> delete(@PathVariable Long[] ids){
+        return ResponseEntity.ok(resourceService.delete(ids));
     }
-
-
 }

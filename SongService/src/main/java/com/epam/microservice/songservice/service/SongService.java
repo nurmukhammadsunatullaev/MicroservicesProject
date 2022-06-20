@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,6 +40,19 @@ public class SongService {
 
     public List<SongModel> getAll() {
         return mapper.toDtos(songRepository.findAll());
+    }
+
+    public List<SongModel> delete(Long[] ids) {
+        List<SongModel> resources=new ArrayList<>();
+        for (Long id : ids) {
+            Optional<SongEntity> entity=songRepository.findById(id);
+            if(entity.isPresent()){
+                SongEntity song=entity.get();
+                resources.add(mapper.toDto(song));
+                songRepository.delete(song);
+            }
+        }
+        return resources;
     }
 }
 

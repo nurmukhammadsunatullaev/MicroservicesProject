@@ -34,4 +34,9 @@ public class SongController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    @DeleteMapping("/{ids}")
+    public ResponseEntity<List<SongModel>> delete(@PathVariable Long[] ids){
+        return ResponseEntity.ok(songService.delete(ids));
+    }
 }
