@@ -1,12 +1,11 @@
-package com.epam.microservice.songservice.model;
+package com.epam.microservice.resourceservice.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class SongModel {

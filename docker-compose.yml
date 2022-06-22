@@ -24,12 +24,13 @@ services:
       - 8081:8081
     depends_on:
       - mysql-db
-      - resource-service
 
   resource-processor:
     build: ResourceProcessor
     ports:
       - 8082:8082
+    volumes:
+      - upload:/upload
     depends_on:
       - mysql-db
 

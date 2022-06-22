@@ -5,14 +5,20 @@ import com.epam.microservice.resourceservice.mapper.ResourceMapper;
 import com.epam.microservice.resourceservice.model.ResourceModel;
 import com.epam.microservice.resourceservice.repository.ResourceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +31,8 @@ public class ResourceService {
     private final ResourceRepository resourceRepository;
     private final ResourceMapper mapper;
 
-    @Transactional
+
+    @Transactional(rollbackFor = SQLException.class)
     public Optional<ResourceModel> saveFile(MultipartFile file){
         try {
             byte[] bytes = file.getBytes();
@@ -34,7 +41,8 @@ public class ResourceService {
             ResourceEntity entity = new ResourceEntity();
             entity.setPath(path.toString());
             resourceRepository.save(entity);
-            return Optional.of(mapper.toDto(entity));
+            ResourceModel resource = mapper.toDto(entity);
+            return Optional.of(resource);
         } catch (IOException e) {
             return Optional.empty();
         }

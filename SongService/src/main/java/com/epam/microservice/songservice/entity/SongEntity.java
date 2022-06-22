@@ -22,5 +22,5 @@ public class SongEntity extends AuditableEntity {
     private String album;
     private String length;
     private Long resourceId;
-    private Integer year;
+    private String year;
 }

@@ -4,6 +4,10 @@ server:
     context-path: /api
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   application:
     name: resource-service
   datasource:
@@ -22,3 +26,7 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
+processor:
+  service:
+    base:
+      url: http://resource-processor:8082/api/processor/

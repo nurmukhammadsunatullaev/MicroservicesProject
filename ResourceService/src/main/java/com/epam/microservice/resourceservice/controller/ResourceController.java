@@ -1,6 +1,7 @@
 package com.epam.microservice.resourceservice.controller;
 
 import com.epam.microservice.resourceservice.model.ResourceModel;
+import com.epam.microservice.resourceservice.service.ProcessorService;
 import com.epam.microservice.resourceservice.service.ResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -14,12 +15,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/resources")
 @RequiredArgsConstructor
 public class ResourceController {
     private final ResourceService resourceService;
+    private final ProcessorService processorService;
 
     @GetMapping
     public ResponseEntity<List<ResourceModel>> get(){
@@ -53,7 +56,13 @@ public class ResourceController {
 
     @PostMapping
     public ResponseEntity<ResourceModel> post(@RequestParam("file") MultipartFile file){
-        return resourceService.saveFile(file).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        Optional<ResourceModel> optional=resourceService.saveFile(file);
+        if(optional.isPresent()){
+            ResourceModel resource = optional.get();
+            processorService.postProcessor(resource);
+            return ResponseEntity.ok(resource);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{ids}")

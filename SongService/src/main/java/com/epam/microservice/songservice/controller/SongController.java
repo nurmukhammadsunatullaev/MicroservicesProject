@@ -32,7 +32,7 @@ public class SongController {
     public ResponseEntity<SongModel> postSong(@RequestBody SongModel model){
         return songService.save(model)
                 .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.badRequest().build());
     }
 
     @DeleteMapping("/{ids}")
