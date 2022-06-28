@@ -1,15 +1,15 @@
 package com.epam.microservice.resourceprocessor.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResourceModel {
+@ToString
+public class ResourceModel implements Serializable {
     private Long id;
     private String path;
 }

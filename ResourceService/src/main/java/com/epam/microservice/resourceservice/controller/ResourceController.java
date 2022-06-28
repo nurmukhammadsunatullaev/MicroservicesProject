@@ -2,6 +2,7 @@ package com.epam.microservice.resourceservice.controller;
 
 import com.epam.microservice.resourceservice.model.ResourceModel;
 import com.epam.microservice.resourceservice.service.ProcessorService;
+import com.epam.microservice.resourceservice.service.ResourceKafkaProducerService;
 import com.epam.microservice.resourceservice.service.ResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ResourceController {
     private final ResourceService resourceService;
-    private final ProcessorService processorService;
+    private final ResourceKafkaProducerService kafkaProducerService;
 
     @GetMapping
     public ResponseEntity<List<ResourceModel>> get(){
@@ -59,7 +60,7 @@ public class ResourceController {
         Optional<ResourceModel> optional=resourceService.saveFile(file);
         if(optional.isPresent()){
             ResourceModel resource = optional.get();
-            processorService.postProcessor(resource);
+            kafkaProducerService.sendResourceModel(resource);
             return ResponseEntity.ok(resource);
         }
         return ResponseEntity.notFound().build();
