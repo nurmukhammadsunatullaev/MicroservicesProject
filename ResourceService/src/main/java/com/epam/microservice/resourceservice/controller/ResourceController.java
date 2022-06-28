@@ -1,7 +1,6 @@
 package com.epam.microservice.resourceservice.controller;
 
 import com.epam.microservice.resourceservice.model.ResourceModel;
-import com.epam.microservice.resourceservice.service.ProcessorService;
 import com.epam.microservice.resourceservice.service.ResourceKafkaProducerService;
 import com.epam.microservice.resourceservice.service.ResourceService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController

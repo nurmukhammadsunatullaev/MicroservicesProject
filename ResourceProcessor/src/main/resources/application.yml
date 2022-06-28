@@ -6,20 +6,11 @@ server:
 spring:
   kafka:
     consumer:
-#      properties:
-#        spring:
-#          deserializer:
-#            value:
-#              delegate:
-#                class: org.springframework.kafka.support.serializer.JsonDeserializer
-#          json:
-#            trusted:
-#              packages: com.epam.microservice.resourceservice.model.ResourceModel
       bootstrap-servers: kafka:9092
       group-id: "resource_group"
       auto-offset-reset: earliest
-#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-#      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
   application:
     name: resource-processor
   servlet:

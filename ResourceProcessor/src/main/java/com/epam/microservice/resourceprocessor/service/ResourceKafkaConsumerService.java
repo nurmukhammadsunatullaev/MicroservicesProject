@@ -15,7 +15,6 @@ public class ResourceKafkaConsumerService {
     private final ProcessorService processorService;
     @KafkaListener(topics = "resource_model_topic", groupId = "resource_group")
     public void consumeResourceModel(ResourceModel model){
-        System.out.println(model);
          Optional<SongModel> resource =  processorService.extractFile(model);
          resource.ifPresent(songModel -> log.info("resource", songModel));
     }
