@@ -16,7 +16,7 @@ spring:
   application:
     name: resource-service
   datasource:
-    url: ${JDBC_URL:jdbc:mysql://mysql-db:3306/resource-db?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true}
+    url: ${JDBC_URL:jdbc:mysql://localhost:3306/resource-db?serverTimezone=UTC&createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true}
     username: ${JDBC_USER:root}
     password: ${JDBC_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
